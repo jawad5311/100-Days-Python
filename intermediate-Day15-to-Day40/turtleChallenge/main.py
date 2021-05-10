@@ -33,7 +33,6 @@ def drawCircle(no_of_circles):
         heading += 5
 
 
-
 drawCircle(360)
 
 
