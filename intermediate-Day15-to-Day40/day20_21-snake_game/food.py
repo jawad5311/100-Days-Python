@@ -12,7 +12,10 @@ class Food(Turtle):
         self.shapesize(.5, .5)  # Decrease the size of the food object by half
         self.color("blue")
         self.speed("fastest")
+        self.refresh()
+
+    def refresh(self):
         # Generate random x and y co-ordinates for the food to place
         random_x = random.randint(-280, 280)
         random_y = random.randint(-280, 280)
-        self.goto(random_x,random_y)
+        self.goto(random_x, random_y)
