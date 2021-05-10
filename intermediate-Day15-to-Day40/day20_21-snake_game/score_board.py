@@ -29,4 +29,9 @@ class ScoreBoard(turtle.Turtle):
         self.score += 1
         self.update_scoreboard()
 
+    def game_over(self):
+        """ Display Game Over on the screen when snake collide with wall or tail """
+        self.goto(0, 0)
+        text = f"Game Over! :("
+        self.write(text, False, ALIGNMENT, FONT)
 
