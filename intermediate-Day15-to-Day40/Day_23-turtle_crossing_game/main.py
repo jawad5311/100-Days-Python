@@ -25,5 +25,8 @@ while game_is_on:
     car.create_car()
     car.move_cars()
 
+    if player.ycor() > 280:
+        player.reset_turtle()
+        car.increase_speed()
 
 screen.exitonclick()
