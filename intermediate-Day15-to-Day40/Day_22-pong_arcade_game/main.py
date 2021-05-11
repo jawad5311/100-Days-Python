@@ -1,17 +1,6 @@
 
 import turtle
-
-
-
-def move_up():
-    new_y = tim.ycor() + 10
-    tim.sety(new_y)
-
-
-def move_down():
-    new_y = tim.ycor() - 10
-    tim.sety(new_y)
-
+import paddle
 
 
 screen = turtle.Screen()
@@ -22,18 +11,18 @@ screen.title("Pong")
 screen.tracer(0)
 
 
-tim = turtle.Turtle()
+r_paddle = paddle.Paddle()
+l_paddle = paddle.Paddle()
 
-tim.shape("square")
-tim.color("white")
-tim.shapesize(5, 1)
-tim.penup()
-tim.goto(350, 0)
 
+r_paddle.go_to(350, 0)
+l_paddle.go_to(-350, 0)
 
 screen.listen()
-screen.onkeypress(move_up, "Up")
-screen.onkeypress(move_down, "Down")
+screen.onkeypress(r_paddle.move_up, "Up")
+screen.onkeypress(r_paddle.move_down, "Down")
+screen.onkeypress(l_paddle.move_up, "w")
+screen.onkeypress(l_paddle.move_down, "s")
 
 
 game_on = True
