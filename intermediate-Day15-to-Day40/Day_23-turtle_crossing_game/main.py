@@ -11,6 +11,7 @@ screen.bgcolor("gray")
 screen.tracer(0)
 
 player = Player()
+car = CarManager()
 
 screen.listen()
 screen.onkeypress(player.move_forward, "Up")
@@ -21,6 +22,8 @@ while game_is_on:
     time.sleep(0.1)
     screen.update()
 
+    car.create_car()
+    car.move_cars()
 
 
 screen.exitonclick()
