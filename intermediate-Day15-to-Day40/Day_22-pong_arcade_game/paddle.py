@@ -10,7 +10,7 @@ class Paddle(turtle.Turtle):
         super().__init__()
         self.shape("square")
         self.color("white")
-        self.shapesize(5,1)
+        self.shapesize(5, 1)
         self.penup()
 
     def go_to(self, x_cor, y_cor):
