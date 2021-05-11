@@ -12,6 +12,7 @@ screen.tracer(0)
 
 player = Player()
 car = CarManager()
+score = Scoreboard()
 
 screen.listen()
 screen.onkeypress(player.move_forward, "Up")
