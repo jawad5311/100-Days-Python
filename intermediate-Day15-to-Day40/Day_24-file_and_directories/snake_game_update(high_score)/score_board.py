@@ -17,7 +17,14 @@ class ScoreBoard(turtle.Turtle):
         self.goto(0, 280)  # Make Turtle goto the top
         self.score = 0
         self.high_score = 0
+        self.read_high_score()
         self.update_scoreboard()  # Calls the func
+
+    def read_high_score(self):
+        """ Reads the previous high scores from the file """
+        with open("data.txt") as file:
+            new_high_score = file.read()
+            self.high_score = int(new_high_score)
 
     def update_scoreboard(self):
         """ Updates the Score Board"""
@@ -32,8 +39,13 @@ class ScoreBoard(turtle.Turtle):
 
     def reset_score(self):
         """ Reset Scores and Update high score """
-        if self.score > self.high_score:
+        if self.score > int(self.high_score):
             self.high_score = self.score
+            # Writes new high scores to the file data.txt
+            with open("data.txt", "w") as file:
+                self.high_score = str(self.high_score)
+                file.write(self.high_score)
+
         self.score = 0
         self.update_scoreboard()
 
