@@ -1,8 +1,8 @@
-## Local Files, Directories, and PATHS
+# Local Files, Directories, and PATHS
 
-### Day 24 of (100 Days of Code)
+#### Day 24
 
-#### Activities
+##### Activities
 
     Working with Local file system
     Understanding how directories work
