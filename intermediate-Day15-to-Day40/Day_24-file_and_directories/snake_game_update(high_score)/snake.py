@@ -22,6 +22,14 @@ class Snake:
         for position in STARTING_POSITIONS:
             self.add_segment(position)
 
+    def reset_snake(self):
+        """ Reset snake and make it disappear on the screen """
+        for seg in self.segments:
+            seg.goto(1000, 1000)
+        self.segments.clear()  # Clears the segment list
+        self.create_snake()  # Creates snake again
+        self.head = self.segments[0]  # Holds the head of the snake
+
     def add_segment(self, position):
         new_segment = turtle.Turtle("square")  # Creates a single part for snake
         new_segment.color("white")  # Gives snake the color white

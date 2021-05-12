@@ -16,12 +16,13 @@ class ScoreBoard(turtle.Turtle):
         self.penup()
         self.goto(0, 280)  # Make Turtle goto the top
         self.score = 0
+        self.high_score = 0
         self.update_scoreboard()  # Calls the func
 
     def update_scoreboard(self):
         """ Updates the Score Board"""
         self.clear()
-        text = f"Score: {self.score}"
+        text = f"Score: {self.score} High Score: {self.high_score}"
         self.write(text, False, ALIGNMENT, FONT)
 
     def update_score(self):
@@ -29,9 +30,16 @@ class ScoreBoard(turtle.Turtle):
         self.score += 1
         self.update_scoreboard()
 
-    def game_over(self):
-        """ Display Game Over on the screen when snake collide with wall or tail """
-        self.goto(0, 0)
-        text = f"Game Over! :("
-        self.write(text, False, ALIGNMENT, FONT)
+    def reset_score(self):
+        """ Reset Scores and Update high score """
+        if self.score > self.high_score:
+            self.high_score = self.score
+        self.score = 0
+        self.update_scoreboard()
+
+    # def game_over(self):
+    #     """ Display Game Over on the screen when snake collide with wall or tail """
+    #     self.goto(0, 0)
+    #     text = f"Game Over! :("
+    #     self.write(text, False, ALIGNMENT, FONT)
 
