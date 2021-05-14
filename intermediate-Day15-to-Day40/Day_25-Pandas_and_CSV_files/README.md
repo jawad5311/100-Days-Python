@@ -8,4 +8,4 @@ Working with CSV Files
 
 Analysing Data with Pandas
 
-States guessing game Project
+US States guessing game Project
