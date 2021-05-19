@@ -1,5 +1,7 @@
+
 import math
 import tkinter
+
 
 # CONSTANTS
 PINK = "#e2979c"
@@ -12,6 +14,7 @@ SHORT_BREAK_MIN = 5
 LONG_BREAK_MIN = 20
 reps = 0
 
+
 # ---------------------------- TIMER RESET ------------------------------- # 
 
 # ---------------------------- TIMER MECHANISM ------------------------------- # 
@@ -19,30 +22,20 @@ reps = 0
 
 def start_timer():
     global reps
+    reps += 1
     work_sec = 3
     short_break_sec = 2
     long_break_sec = 4
 
-    if reps % 2 == 0:
+    if reps % 8 == 0:
+        count_down(long_break_sec)
+        label.config(text="Long Breeeaak", fg=RED)
+    elif reps % 2 == 0:
+        count_down(short_break_sec) 
+        label.config(text="Break Time", fg=PINK)
+    else:
         count_down(work_sec)
         label.config(text="Working Time", fg=GREEN)
-        reps += 1
-
-    elif reps % 2 != 0:
-
-        if reps % 7 == 0:
-            count_down(long_break_sec)
-            label.config(text="Long Breeeaaakk", fg=RED)
-            reps = 0
-        else:
-            count_down(short_break_sec)
-            label.config(text="Break Time", fg=PINK)
-            reps += 1
-
-    #
-    # else:
-    #     count_down(work_sec)
-    #     reps += 1
 
 
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- # 
@@ -62,6 +55,12 @@ def count_down(count):
     else:
         start_timer()
 
+        mark = ""
+        work_session = math.floor(reps/2)
+        for _ in range(work_session):
+            mark += "✔"
+
+        tick_label.config(text=mark)
 
 # ---------------------------- UI SETUP ------------------------------- #
 
@@ -87,9 +86,8 @@ start_btn.grid(column=0, row=3)
 reset_btn = tkinter.Button(text="Reset", highlightthickness=0)
 reset_btn.grid(column=2, row=3)
 
-new_label = tkinter.Label(text="✓", fg=GREEN, bg=YELLOW, font=(FONT_NAME, 18))
-new_label.grid(column=1, row=4)
-
+tick_label = tkinter.Label(fg=GREEN, bg=YELLOW, font=(FONT_NAME, 18))
+tick_label.grid(column=1, row=4)
 
 
 window.mainloop()
