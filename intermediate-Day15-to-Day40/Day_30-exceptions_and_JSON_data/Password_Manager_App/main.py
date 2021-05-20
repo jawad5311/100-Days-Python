@@ -93,6 +93,35 @@ def save():
                 pass_entry.delete(0, tkinter.END)  # Clear password entry
 
 
+# ---------------------------- Search Data ------------------------------- #
+
+
+def search_data():
+    """ Search for the data in the file and provides user with the Login credentials. """
+    web_data = web_entry.get()  # Get hold of website entry data
+    # If the field is empty then show info box
+    if len(web_data) == 0:
+        messagebox.showinfo(title="Ooops", message="Please fill all the fields")
+    else:
+        try:
+            # Try to open the file and look if file not found error is raised
+            with open("data.json", "r") as file:
+                data = json.load(file)  # Get holds of the json data from the file as py dict
+        except FileNotFoundError:
+            # Raise FileNotFoundError and pop up the box with details
+            messagebox.showinfo(title="Data File Not Found!", message="No data file exists currently!")
+        else:
+            if web_data in data: # If the entry is found in file data then return with email and password
+                email_data = data[web_data]["email"]  # Grabs the email
+                password_data = data[web_data]["password"]  # Grabs the password
+                pyperclip.copy(password_data)  # Copy the password to the clipboard for quick paste
+                # Pop up info box with Login Credentials
+                messagebox.showinfo(title=f"{web_data} Login Credentials", message=f"Email:   \t   {email_data}\n"
+                                                                                   f"Password:  {password_data}")
+            else:  # If entry not found then pop up the box with details
+                messagebox.showinfo(title="Website not found", message=f"No entry found of \n{web_data}")
+
+
 # ---------------------------- UI SETUP ------------------------------- #
 
 
@@ -125,8 +154,8 @@ label_2.grid(column=0, row=2)
 label_3 = tkinter.Label(text="Password:")
 label_3.grid(column=0, row=3)
 
-web_entry = tkinter.Entry(width=40)
-web_entry.grid(column=1, row=1, columnspan=2, sticky="w")
+web_entry = tkinter.Entry(width=23)
+web_entry.grid(column=1, row=1, columnspan=1, sticky="w")
 web_entry.focus()  # Move the cursor to the entry box
 
 mail_entry = tkinter.Entry(width=40)
@@ -141,6 +170,9 @@ generate_btn.grid(column=1, row=4)
 
 add_btn = tkinter.Button(text="Add", command=save, width=34)
 add_btn.grid(column=1, row=5, columnspan=2, sticky="w")
+
+search_btn = tkinter.Button(text="Search", command=search_data, width=13)
+search_btn.grid(column=1, row=1, sticky="e")
 
 
 window.mainloop()  # Keep window running
