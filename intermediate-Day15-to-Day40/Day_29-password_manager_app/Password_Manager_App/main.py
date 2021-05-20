@@ -19,20 +19,22 @@ def generate_password():
     nr_symbols = random.randint(2, 4)
     nr_numbers = random.randint(2, 4)
 
-    random_letters = []
+    random_char = [random.choice(characters) for char in range(nr_letters)]
+    random_symb = [random.choice(symbols) for sym in range(nr_symbols)]
+    random_numb = [random.choice(digits) for num in range(nr_numbers)]
 
-    for _ in range(nr_letters):
-        random_letters.append(random.choice(characters))
-    for _ in range(nr_symbols):
-        random_letters.append(random.choice(symbols))
-    for _ in range(nr_numbers):
-        random_letters.append(random.choice(digits))
+    password_list = random_char + random_numb + random_symb
+    random.shuffle(password_list)
 
-    random.shuffle(random_letters)
-    password = ""
-    for _ in random_letters:
-        password += _
-    print(password)
+    password = "".join(password_list)
+
+    return password
+
+
+def add_password():
+    random_password = generate_password()
+    print(random_password)
+
 
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
@@ -54,8 +56,6 @@ def save():
             file.write(f"{website_data} | {email_data} | {pass_data}\n")
             web_entry.delete(0, tkinter.END)
             pass_entry.delete(0, tkinter.END)
-
-
 
 
 # ---------------------------- UI SETUP ------------------------------- #
@@ -96,7 +96,7 @@ mail_entry.insert(0, "myName@email.com")
 pass_entry = tkinter.Entry(width=40)
 pass_entry.grid(column=1, row=3, columnspan=2, sticky="w")
 
-generate_btn = tkinter.Button(text="Generate Password", command=generate_password, width=34)
+generate_btn = tkinter.Button(text="Generate Password", command=add_password, width=34)
 generate_btn.grid(column=1, row=4)
 
 add_btn = tkinter.Button(text="Add", command=save, width=34)
