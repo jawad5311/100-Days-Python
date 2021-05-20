@@ -1,9 +1,39 @@
 
 import tkinter
 from tkinter import messagebox
+import random
+import string
 
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
+
+
+alphabets = string.ascii_lowercase + string.ascii_uppercase
+characters = [_ for _ in alphabets]
+digits = [_ for _ in string.digits]
+symbols = ['!', '#', '$', '%', '(', ')', '*', '+']
+
+
+def generate_password():
+    nr_letters = random.randint(8, 10)
+    nr_symbols = random.randint(2, 4)
+    nr_numbers = random.randint(2, 4)
+
+    random_letters = []
+
+    for _ in range(nr_letters):
+        random_letters.append(random.choice(characters))
+    for _ in range(nr_symbols):
+        random_letters.append(random.choice(symbols))
+    for _ in range(nr_numbers):
+        random_letters.append(random.choice(digits))
+
+    random.shuffle(random_letters)
+    password = ""
+    for _ in random_letters:
+        password += _
+    print(password)
+
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 
@@ -66,7 +96,7 @@ mail_entry.insert(0, "myName@email.com")
 pass_entry = tkinter.Entry(width=40)
 pass_entry.grid(column=1, row=3, columnspan=2, sticky="w")
 
-generate_btn = tkinter.Button(text="Generate Password", width=34)
+generate_btn = tkinter.Button(text="Generate Password", command=generate_password, width=34)
 generate_btn.grid(column=1, row=4)
 
 add_btn = tkinter.Button(text="Add", command=save, width=34)
