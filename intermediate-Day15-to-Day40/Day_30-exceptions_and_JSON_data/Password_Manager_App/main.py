@@ -12,6 +12,7 @@ from tkinter import messagebox
 import random
 import string
 import pyperclip
+import json
 
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
@@ -60,14 +61,28 @@ def save():
     email_data = mail_entry.get()
     pass_data = pass_entry.get()
 
-    # Pop up the dialog box for the confirmation
-    is_ok = messagebox.askokcancel(title=website_data, message=f"Details Entered:\n\ nEmail: {email_data}\nPassword: {pass_data}\n\n"
-                                                       f"Check and Press OK to Save!")
+    new_data = {
+        website_data: {
+            "email": email_data,
+            "password": pass_data
+        }
+    }
+
+    if len(website_data) == 0 or len(pass_data) == 0:
+        messagebox.showinfo(title="Ooops", message="Please fill all the fields")
+
+    # # Pop up the dialog box for the confirmation
+    # is_ok = messagebox.askokcancel(title=website_data, message=f"Details Entered:\n\ nEmail: {email_data}\nPassword: {pass_data}\n\n"
+    #                                                    f"Check and Press OK to Save!")
 
     # If confirmed then save the data to file and clear website and password entries
-    if is_ok:
-        with open("data.txt", "a") as file:
-            file.write(f"{website_data} | {email_data} | {pass_data}\n")
+    else:
+        with open("data.json", "r") as file:
+            data = json.load(file)
+            data.update(new_data)
+
+        with open("data.json", "w") as file:
+            json.dump(data, file, indent=4)
             web_entry.delete(0, tkinter.END)  # Clear website entry
             pass_entry.delete(0, tkinter.END)  # Clear password entry
 
