@@ -77,14 +77,20 @@ def save():
 
     # If confirmed then save the data to file and clear website and password entries
     else:
-        with open("data.json", "r") as file:
-            data = json.load(file)
+        try:
+            with open("data.json", "r") as file:
+                data = json.load(file)
+        except FileNotFoundError:
+            with open("data.json", "w") as file:
+                json.dump(new_data, file, indent=4)
+                web_entry.delete(0, tkinter.END)  # Clear website entry
+                pass_entry.delete(0, tkinter.END)  # Clear password entry
+        else:
             data.update(new_data)
-
-        with open("data.json", "w") as file:
-            json.dump(data, file, indent=4)
-            web_entry.delete(0, tkinter.END)  # Clear website entry
-            pass_entry.delete(0, tkinter.END)  # Clear password entry
+            with open("data.json", "w") as file:
+                json.dump(data, file, indent=4)
+                web_entry.delete(0, tkinter.END)  # Clear website entry
+                pass_entry.delete(0, tkinter.END)  # Clear password entry
 
 
 # ---------------------------- UI SETUP ------------------------------- #
