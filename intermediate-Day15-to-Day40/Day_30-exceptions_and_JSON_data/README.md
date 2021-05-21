@@ -9,3 +9,5 @@
 3. Improve our existing Password Manager App
    Search through the Database for the specific website login details
    Make app robust by handling exceptions
+
+Note: Do check the requirements.txt before running code
