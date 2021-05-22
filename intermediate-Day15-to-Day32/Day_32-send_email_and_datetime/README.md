@@ -7,4 +7,4 @@
    Send emails on time using datetime module
 
 2. Project - Automate Emails
-   Automating the Happy birthday emails to fnf.
+   Automating the Quotes emails to fnf or myself on every monday.
