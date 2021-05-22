@@ -1,6 +1,7 @@
 
 import requests
 
+# Parameters requires to fetch data from trivia database using API
 parameters = {
     "amount": 10,
     "type": "boolean"
@@ -8,10 +9,8 @@ parameters = {
 
 data = requests.get("https://opentdb.com/api.php", parameters).json()
 
-question_data = data["results"]
+question_data = data["results"]  # Holds fetched data as py list
 print(question_data)
-
-
 
 
 # question_data = [

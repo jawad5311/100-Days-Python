@@ -1,21 +1,23 @@
-from question_model import Question
-from data import question_data
-from quiz_brain import QuizBrain
+
+import question_model
+import data
+import quiz_brain
 import ui
 
-question_bank = []
-for question in question_data:
+
+question_bank = []  # Holds the list of questions objects. Fetched from trivia database using following loop
+for question in data.question_data:
     question_text = question["question"]
     question_answer = question["correct_answer"]
-    new_question = Question(question_text, question_answer)
+    new_question = question_model.Question(question_text, question_answer)
     question_bank.append(new_question)
 
 
-quiz = QuizBrain(question_bank)
+quiz = quiz_brain.QuizBrain(question_bank)
 quiz_ui = ui.QuizInterface(quiz)
 
 # while quiz.still_has_questions():
 #     quiz.next_question()
 
-print("You've completed the quiz")
-print(f"Your final score was: {quiz.score}/{quiz.question_number}")
+# print("You've completed the quiz")
+# print(f"Your final score was: {quiz.score}/{quiz.question_number}")
