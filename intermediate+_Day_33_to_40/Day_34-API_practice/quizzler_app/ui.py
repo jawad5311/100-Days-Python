@@ -11,6 +11,7 @@ class QuizInterface:
         self.quiz = quiz_brain
         self.create_ui_window()
         self.score = 0
+        self.canvas = None
         self.score_object()
         self.canvas_object()
         self.get_next_question()
@@ -71,13 +72,21 @@ class QuizInterface:
 
     def get_next_question(self):
         q_text = self.quiz.next_question()
+        self.canvas.config(self.canvas, bg="white")
         self.canvas.itemconfig(self.question_text, text=q_text)
 
     def right_answer(self):
-        self.quiz.check_answer("True")
-        self.get_next_question()
+        self.give_feedback(self.quiz.check_answer("True"))
+        #self.get_next_question()
 
     def wrong_answer(self):
-        self.quiz.check_answer("False")
-        self.get_next_question()
+        self.give_feedback(self.quiz.check_answer("False"))
+        #self.get_next_question()
 
+    def give_feedback(self, is_right):
+        if not is_right:
+            self.canvas.config(bg="red")
+        if is_right:
+            self.canvas.config(bg="green")
+
+        self.window.after(1000, self.get_next_question)
