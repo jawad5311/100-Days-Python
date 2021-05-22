@@ -13,16 +13,17 @@ rand_word = None
 
 
 """
-    Displaying random word on screen
-
+    Opening the data file and reading data from it
 """
-
 try:  # Try to open the words_to_learn.csv file
     data = pandas.read_csv("data/words_to_learn.csv").to_dict(orient="records")
 except FileNotFoundError:  # And If the file was not found then open the initial data file
     data = pandas.read_csv("data/french_words.csv").to_dict(orient="records")
 
 
+"""
+    Generating a new random word and updating the existing data
+"""
 def generate_word():
     """ Generates a random word from the available french words list"""
     global rand_word
