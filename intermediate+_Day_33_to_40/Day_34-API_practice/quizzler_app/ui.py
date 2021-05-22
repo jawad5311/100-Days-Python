@@ -55,7 +55,8 @@ class QuizInterface:
         right_btn = tkinter.Button(
             image=self.right_btn_img,
             highlightthickness=0,
-            bg=THEME_COLOR
+            bg=THEME_COLOR,
+            command=self.right_answer
         )
         right_btn.grid(column=0, row=2, pady=10)
 
@@ -63,11 +64,20 @@ class QuizInterface:
         left_btn = tkinter.Button(
             image=self.left_btn_img,
             highlightthickness=0,
-            bg=THEME_COLOR
+            bg=THEME_COLOR,
+            command=self.wrong_answer
         )
         left_btn.grid(column=1, row=2, pady=10)
 
     def get_next_question(self):
         q_text = self.quiz.next_question()
         self.canvas.itemconfig(self.question_text, text=q_text)
+
+    def right_answer(self):
+        self.quiz.check_answer("True")
+        self.get_next_question()
+
+    def wrong_answer(self):
+        self.quiz.check_answer("False")
+        self.get_next_question()
 
