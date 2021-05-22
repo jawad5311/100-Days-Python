@@ -1,16 +1,19 @@
 
 import tkinter
+import quiz_brain
 
 THEME_COLOR = "#375362"
 
 
 class QuizInterface:
-    def __init__(self):
+    def __init__(self, quiz_brain: quiz_brain.QuizBrain):
         self.window = None
+        self.quiz = quiz_brain
         self.create_ui_window()
         self.score = 0
         self.score_object()
         self.canvas_object()
+        self.get_next_question()
         self.right_btn_img = tkinter.PhotoImage(file="images/true.png")
         self.left_btn_img = tkinter.PhotoImage(file="images/false.png")
         self.true_btn()
@@ -23,18 +26,48 @@ class QuizInterface:
         self.window.config(padx=20, pady=20, bg=THEME_COLOR)
 
     def score_object(self):
-        score_label = tkinter.Label(text=f"Score: {self.score}", bg=THEME_COLOR, fg="white")
-        score_label.grid(column=1, row=0, padx=20, pady=20)
+        score_label = tkinter.Label(
+            text=f"Score: {self.score}",
+            bg=THEME_COLOR,
+            fg="white"
+        )
+        score_label.grid(column=1, row=0)
 
     def canvas_object(self):
-        canvas = tkinter.Canvas(width=300, height=250)
-        q_text = canvas.create_text(150, 125, text="hello", font=("Arial", 20, "italic"))
-        canvas.grid(column=0, row=1, padx=20, pady=20, columnspan=2)
+        self.canvas = tkinter.Canvas(width=300, height=250)
+        self.question_text = self.canvas.create_text(
+            150,
+            125,
+            width=280,
+            fill=THEME_COLOR,
+            text="hello",
+            font=("Arial", 20, "italic")
+        )
+        self.canvas.grid(
+            column=0,
+            row=1,
+            padx=20,
+            pady=30,
+            columnspan=2
+        )
 
     def true_btn(self):
-        right_btn = tkinter.Button(image=self.right_btn_img, highlightthickness=0, bg=THEME_COLOR)
-        right_btn.grid(column=0, row=2)
+        right_btn = tkinter.Button(
+            image=self.right_btn_img,
+            highlightthickness=0,
+            bg=THEME_COLOR
+        )
+        right_btn.grid(column=0, row=2, pady=10)
 
     def wrong_btn(self):
-        left_btn = tkinter.Button(image=self.left_btn_img, highlightthickness=0, bg=THEME_COLOR)
-        left_btn.grid(column=1, row=2)
+        left_btn = tkinter.Button(
+            image=self.left_btn_img,
+            highlightthickness=0,
+            bg=THEME_COLOR
+        )
+        left_btn.grid(column=1, row=2, pady=10)
+
+    def get_next_question(self):
+        q_text = self.quiz.next_question()
+        self.canvas.itemconfig(self.question_text, text=q_text)
+
