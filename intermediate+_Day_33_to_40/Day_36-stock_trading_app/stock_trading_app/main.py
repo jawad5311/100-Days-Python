@@ -10,7 +10,7 @@ news_api_key = decouple.config('NEWS_API')
 stock_api_key = decouple.config('AV_API')
 
 # Endpoint and parameters to fetch data for Tesla
-T_ENDPOINT = "https://www.alphavantage.co/query"
+STOCK_ENDPOINT = "https://www.alphavantage.co/query"
 parameters = {
     "function": "TIME_SERIES_DAILY",
     "symbol": "TSLA",
@@ -18,7 +18,7 @@ parameters = {
 }
 
 stock_response = requests.get(
-    url=T_ENDPOINT,
+    url=STOCK_ENDPOINT,
     params=parameters
 )
 
@@ -26,23 +26,41 @@ tesla_data = stock_response.json()
 
 daily_keys = list(tesla_data["Time Series (Daily)"].keys())
 
-print(type(daily_keys))
-print(type(daily_keys[0]))
-print(daily_keys[0])
 
-tsla_last_price = tesla_data["Time Series (Daily)"][daily_keys[0]]["4. close"]
-tsla_yesterday_price = tesla_data["Time Series (Daily)"][daily_keys[1]]["4. close"]
-print(tsla_last_price)
-print(tsla_yesterday_price)
+yesterday_price = tesla_data["Time Series (Daily)"][daily_keys[0]]["4. close"]
+before_yesterday_price = tesla_data["Time Series (Daily)"][daily_keys[1]]["4. close"]
+print(yesterday_price)
+print(before_yesterday_price)
 
+difference = abs(float(yesterday_price) - float(before_yesterday_price))
+print(difference)
 
-## STEP 1: Use https://www.alphavantage.co
-# When STOCK price increase/decreases by 5% between yesterday and
-# the day before yesterday then print("Get News").
+diff_percent = (difference / float(yesterday_price)) * 100
+print(diff_percent)
 
-## STEP 2: Use https://newsapi.org
-# Instead of printing ("Get News"),
-# actually get the first 3 news pieces for the COMPANY_NAME.
+if diff_percent > 1:
+    NEWS_ENDPOINT = "https://newsapi.org/v2/everything"
+    news_params = {
+        "apiKey": news_api_key,
+        "qInTitle": COMPANY_NAME
+    }
+    news_response = requests.get(
+        url=NEWS_ENDPOINT, params=news_params
+    )
+
+    articles = news_response.json()["articles"]
+    # print(articles[:3])
+    # print(type(articles))
+
+    first_article = articles[0]
+    # print(first_article)
+
+    article_headline = articles[0]["title"]
+    print(article_headline)
+
+    article_desc = articles[0]["content"]
+    print(article_desc)
+
 
 ## STEP 3: Use https://www.twilio.com
 # Send a seperate message with the percentage change and
