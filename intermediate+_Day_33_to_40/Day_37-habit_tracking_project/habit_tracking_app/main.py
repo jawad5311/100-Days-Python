@@ -22,9 +22,10 @@ user_parameters = {
 
 
 graph_endpoint = f"https://pixe.la/v1/users/jawad5311/graphs"
+graph_id = "graph1"
 
 graph_parameters = {
-    "id": "graph1",
+    "id": graph_id,
     "name": "Coding_Habit",
     "unit": "min",
     "type": "int",
@@ -44,7 +45,20 @@ headers = {
 # print(graph_response.status_code)
 # print(graph_response.text)
 
+post_pix_endpoint = f"https://pixe.la/v1/users/jawad5311/graphs/{graph_id}/"
 
+pixel_parameters = {
+    "date":"20210522",
+    "quantity":"7",
+    "optionalData":"{\"work\":\"Trading Alert App\"}"
+}
 
+post_pixel = requests.post(
+    url=post_pix_endpoint,
+    headers= headers,
+    json= pixel_parameters
+)
 
+print(post_pixel.status_code)
+print(post_pixel.text)
 
