@@ -21,3 +21,7 @@ flight_search = flight_search.FlightSearch()
 sheet_data = data_manager.get_destination_data()
 pprint(sheet_data)
 
+data_manager.update_destination_code()
+pprint(sheet_data)
+
+

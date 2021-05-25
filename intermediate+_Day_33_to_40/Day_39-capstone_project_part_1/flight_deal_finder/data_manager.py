@@ -24,18 +24,19 @@ class DataManager(FlightSearch):
             headers= sheety_header
         ).json()
         self.destination_data = response['sheet1']
+        # self.update_destination_code()
         return self.destination_data
 
     def update_destination_code(self):
         for row in self.destination_data:
-            city = row['city']
             # print(city)
             iata_code = row['iataCode']
             # print(row)
             if iata_code == '':
+                city = row['city']
                 new_data = {
                     'sheet1': {
-                        'iataCode': FlightSearch.get_destination_code(city)
+                        'iataCode': FlightSearch.get_destination_code(city_name=city)
                     }
                 }
                 response = requests.put(
@@ -45,3 +46,5 @@ class DataManager(FlightSearch):
                 )
                 print(response.status_code)
                 print(response.text)
+
+        self.get_destination_data()
