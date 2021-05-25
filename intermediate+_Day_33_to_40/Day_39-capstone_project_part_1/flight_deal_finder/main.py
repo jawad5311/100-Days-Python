@@ -1,36 +1,31 @@
 
+# Required modules
 import os
-import requests
-from pprint import pprint
 from datetime import datetime, timedelta
 
+# Project Files
 import flight_search
 import data_manager
+import notification_manager
 
 import dotenv
-dotenv.load_dotenv()
+dotenv.load_dotenv()  # Loads .env file
 
-
-sheety_api = os.environ.get('SHEETY_API')
-kiwi_api = os.environ.get('KIWI_API')
-sheety_endpoint = os.environ.get('SHEETY_ENDPOINT')
-
-
+# Objects created from classes
 data_manager = data_manager.DataManager()
 flight_search = flight_search.FlightSearch()
+notification_manager = notification_manager.NotificationManager()
 
-sheet_data = data_manager.get_destination_data()
-pprint(sheet_data)
+sheet_data = data_manager.get_destination_data()  # Sheet data from Google Sheet
 
-ORIGIN_CITY_IATA = "LON"
+ORIGIN_CITY_IATA = "LON"  # Default location iataCode
 
+# Time format DD:MM:YY
 current_time = datetime.now()
-
-tomorrow = datetime.now() + timedelta(days=1)
-six_month_from_today = datetime.now() + timedelta(days=(6 * 30))
 from_date = (current_time + timedelta(days=3)).strftime('%d/%m/%Y')
 to_date = (current_time + timedelta(days=180)).strftime('%d/%m/%Y')
 
+# Go through each destination from the data and search for fare
 for destination in sheet_data:
     flight = flight_search.search_fare_price(
         origin_code=ORIGIN_CITY_IATA,
@@ -39,4 +34,9 @@ for destination in sheet_data:
         to_date=to_date
     )
 
+    # If the fare price is lowest then the actual price then sends an email
+    if flight.price < destination['lowestPrice']:
+        message = f"From: {flight.origin_city} to {flight.destination_city}\nPrice: {flight.price}\n"
+        notification_manager.send_email(message)
+        print("email sent")
 

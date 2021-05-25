@@ -1,14 +1,16 @@
 
+# Required modules
 import os
-from pprint import pprint
 import datetime as dt
 import requests
 
+# Project Files
 from flight_data import FlightData
 
 import dotenv
-dotenv.load_dotenv()
+dotenv.load_dotenv()  # Loads .env file
 
+# KIWI endpoints, api, & header
 kiwi_api = os.environ.get('KIWI_API')
 kiwi_endpoint = "https://tequila-api.kiwi.com/v2/search"
 kiwi_header = {
@@ -16,19 +18,10 @@ kiwi_header = {
 }
 
 
-current_time = dt.datetime.now()
-from_date = (current_time + dt.timedelta(days=3)).strftime('%d/%m/%Y')
-to_date = (current_time + dt.timedelta(days=180)).strftime('%d/%m/%Y')
-
-
 class FlightSearch():
-    # def __init__(self):
-    #     # self.price = int(price)
-    #     # self.air_code = departure_airport_code
-    #     # self.depar_city = departure_city
-    #     pass
-
+    """ Search flights for required destinations """
     def get_destination_code(city_name):
+        """ Return iataCode of the city """
         kiwi_parameters = {
             'term': city_name,
             "location_types": "city"
@@ -39,13 +32,12 @@ class FlightSearch():
             params= kiwi_parameters
         )
         print(response.status_code)
-        #print(response.text)
 
         code_data = response.json()['locations'][0]['code']
-        # pprint(code_data)
         return code_data
 
     def search_fare_price(self, origin_code, destination_city_code, from_date, to_date):
+        # Parameters use to get the flights data
         kiwi_parameters = {
             "fly_from": origin_code,
             "fly_to": destination_city_code,
@@ -63,17 +55,14 @@ class FlightSearch():
             headers= kiwi_header,
             params= kiwi_parameters
         )
-        # print(response.status_code)
-        # print(response.json())
-
+        # Handles the IndexError exception
         try:
             data = response.json()['data'][0]
         except IndexError:
             print(f"No flights found for {destination_city_code}.")
             return None
 
-        # print(data)
-
+        # Create flight object of the data returned from the kiwi response
         flight_data = FlightData(
             price=data["price"],
             origin_city=data["route"][0]["cityFrom"],
@@ -83,8 +72,9 @@ class FlightSearch():
             out_date=data["route"][0]["local_departure"].split("T")[0],
             return_date=data["route"][1]["local_departure"].split("T")[0]
         )
+
         print(f"{flight_data.destination_city}: ${flight_data.price}")
-        return flight_data
+        return flight_data  # Return the flight data object
 
 
 
