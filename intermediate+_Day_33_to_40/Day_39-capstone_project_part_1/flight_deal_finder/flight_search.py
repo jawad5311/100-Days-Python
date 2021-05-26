@@ -52,15 +52,39 @@ class FlightSearch():
         }
         response = requests.get(
             url=kiwi_endpoint,
-            headers= kiwi_header,
-            params= kiwi_parameters
+            headers=kiwi_header,
+            params=kiwi_parameters
         )
         # Handles the IndexError exception
         try:
             data = response.json()['data'][0]
         except IndexError:
-            print(f"No flights found for {destination_city_code}.")
-            return None
+            kiwi_parameters['max_stopovers'] = 3
+            response = requests.get(
+                url=kiwi_endpoint,
+                headers=kiwi_header,
+                params=kiwi_parameters
+            )
+            try:
+                data = response.json()['data'][0]
+                # Create flight object of the data returned from the kiwi response
+            except IndexError:
+                print(f"No flights found for {destination_city_code}")
+                return None
+            else:
+                flight_data = FlightData(
+                    price=data["price"],
+                    origin_city=data["route"][0]["cityFrom"],
+                    origin_airport=data["route"][0]["flyFrom"],
+                    destination_city=data["route"][0]["cityTo"],
+                    destination_airport=data["route"][0]["flyTo"],
+                    out_date=data["route"][0]["local_departure"].split("T")[0],
+                    return_date=data["route"][1]["local_departure"].split("T")[0]
+                )
+                return flight_data
+
+        # except IndexError:
+        #     print("IndexError 2. continue")
 
         else:
             # Create flight object of the data returned from the kiwi response

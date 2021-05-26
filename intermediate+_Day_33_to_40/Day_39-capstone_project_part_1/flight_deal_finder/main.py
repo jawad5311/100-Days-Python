@@ -38,8 +38,11 @@ for destination in sheet_data:
         continue
 
     # If the fare price is lowest then the actual price then sends an email
-    # if flight.price < destination['lowestPrice']:
-    #     message = f"From: {flight.origin_city} to {flight.destination_city}\nPrice: {flight.price}\n"
-    #     notification_manager.send_email(message)
-    #     print("email sent")
+    if flight.price < destination['lowestPrice']:
+        message = f"From: {flight.origin_city} to {flight.destination_city}\nPrice: {flight.price}\n"
+
+        if flight.stop_overs > 0:
+            message += f"\nFlight has {flight.stop_overs} stop over, via {flight.via_city}."
+            notification_manager.send_email(message)
+            print(f"Flight with {flight.stop_overs} stops.")
 
