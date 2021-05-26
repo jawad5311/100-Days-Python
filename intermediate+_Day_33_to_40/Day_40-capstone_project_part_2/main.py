@@ -1,4 +1,14 @@
 
+"""
+    Flight Club
+
+    Makes user signup for the service.
+    Takes Input:
+        Name,
+        Email
+
+"""
+
 import requests
 import os
 import dotenv
@@ -9,14 +19,6 @@ sheety_api = os.environ.get('SHEETY_USER_API')
 sheety_header = {
     'Authorization': f"Bearer {sheety_api}"
 }
-
-
-# response = requests.get(
-#     url=sheety_endpoint,
-#     headers=sheety_header,
-# )
-#
-# print(response.json())
 
 user_FN = input(f"Your First Name? ").title()
 user_LN = input(f"Your Last Name? ").title()

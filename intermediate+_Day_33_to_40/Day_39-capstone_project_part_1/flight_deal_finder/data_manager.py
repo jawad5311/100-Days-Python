@@ -47,8 +47,8 @@ class DataManager(FlightSearch):
                 # Send put request to google sheets to update data
                 response = requests.put(
                     url=f"{sheety_endpoint}/{row['id']}",
-                    headers= sheety_header,
-                    json = new_data
+                    headers=sheety_header,
+                    json=new_data
                 )
                 print(response.status_code)  # Provides with the status of the request
 

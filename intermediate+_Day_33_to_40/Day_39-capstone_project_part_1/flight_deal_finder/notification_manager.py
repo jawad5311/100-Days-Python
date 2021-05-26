@@ -21,7 +21,8 @@ sheety_header = {
 
 class NotificationManager:
     """ Notify the user with by sending email """
-    def send_email(self, msg):
+    def send_email(self, msg, link):
+        """ Fetch user emails from google sheets and send them flight deals """
         response = requests.get(
             url=sheety_endpoint_user,
             headers=sheety_header,
@@ -29,9 +30,9 @@ class NotificationManager:
         print(response.status_code)
         users = response.json()['users']
         for user in users:
+            """ Send email to each user individually """
             email = user['email']
-            print(email)
-            with smtplib.SMTP('smtp-mail.outlook.com') as connection:
+            with smtplib.SMTP('smtp.live.com') as connection:
                 connection.starttls()
                 connection.login(
                     user=user_email,
@@ -39,11 +40,8 @@ class NotificationManager:
                 )
                 connection.sendmail(
                     from_addr=user_email,
-                    to_addrs=user,
-                    msg=msg
+                    to_addrs=email,
+                    msg=f"Subject: Cheap Flight Alert\n\n{msg}\n\n"
+                        f"Book Now: {link}"
                 )
                 print(f"email send to {user}")
-
-
-nm = NotificationManager()
-nm.send_email("hi")
