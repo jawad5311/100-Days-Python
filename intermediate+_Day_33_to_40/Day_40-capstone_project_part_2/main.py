@@ -24,24 +24,25 @@ user_email = input(f"Your Email? ").lower()
 user_email_again = input(f"Type your Email again? ").lower()
 
 if user_email == user_email_again:
+    sheety_parameters_post = {
+        'user': {
+            'firstName': user_FN,
+            'lastName': user_LN,
+            'email': user_email
+        }
+    }
+
+    post_response = requests.post(
+        url=sheety_endpoint,
+        headers=sheety_header,
+        json=sheety_parameters_post
+    )
+
+    print(post_response.status_code)
+    print(post_response.text)
     print(f"\nWelcome to the club")
 else:
     print(f"Please enter the right email...")
 
-sheety_parameters_post = {
-    'user':{
-        'firstName': user_FN,
-        'lastName': user_LN,
-        'email': user_email
-    }
-}
 
-post_response = requests.post(
-    url=sheety_endpoint,
-    headers=sheety_header,
-    json=sheety_parameters_post
-)
-
-print(post_response.status_code)
-print(post_response.text)
 
