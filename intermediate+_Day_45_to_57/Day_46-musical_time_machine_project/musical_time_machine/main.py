@@ -144,6 +144,8 @@ def create_playlist():
     # print(pl_response.text)
 
     play_id = pl_response.json()['id']
+    # print(play_id)
+
     print(f"Playlist ID: {play_id}")
     return play_id
 
@@ -177,6 +179,19 @@ playlist_id = create_playlist()
 
 def add_tracks():
     add_tracks_endpoint = f'https://api.spotify.com/v1/playlists/{playlist_id}/tracks'
-    add_tracks_header = {'Authorization': f"Bearer {os.getenv('ADD_ITEMS_TOKEN')}"}
+    add_tracks_header = {
+        'Authorization': f"Bearer {os.getenv('ADD_ITEMS_TOKEN')}",
+        'Content-Type': 'application/json'}
+    add_tracks_params = {'uris': song_uris}
+
+    response_add_tracks = requests.post(
+        url=add_tracks_endpoint,
+        headers=add_tracks_header,
+        json=add_tracks_params
+    )
+
+    print(response_add_tracks.status_code)
+    print(response_add_tracks.text)
 
 
+add_tracks()
