@@ -12,42 +12,27 @@ driver.set_window_size(1440, 720)
 driver.get('http://orteil.dashnet.org/experiments/cookie/')
 
 cookie = driver.find_element_by_id('cookie')
-cookie.click()
-cookie.click()
-cookie.click()
-cookie.click()
-cookie.click()
-cookie.click()
-cookie.click()
 
 
-cookie_count = int(driver.find_element_by_id('money').text)
-print(type(cookie_count))
-print(cookie_count)
+# cookie_count = int(driver.find_element_by_id('money').text)
+# print(type(cookie_count))
+# print(cookie_count)
 
-# buy_cursor = driver.find_element_by_id('buyCursor').text
-# print(buy_cursor)
 
-# store = driver.find_element_by_id('store')
-# print(store.text)
+items = driver.find_elements_by_css_selector("#store div")
+item_ids = [item.get_attribute("id") for item in items]
+# print(item_ids)
 
-# check = driver.find_element_by_css_selector('#buyCursor .grayed').text
-# print(check)
 
-# EC.invisibility_of_element()
+timeout = time.time() + 20
+five_min = time.time() + 60
 
-# condition = cookie_count *
-
-timeout = time.time() + 1
 
 while True:
-    cookie.click()
-    if time.time() > timeout:
-        # timeout = time.time() + 5
-        # print('Timed Out')
-        # grayed = driver.find_element_by_class_name('grayed')
-        # item = EC.invisibility_of_element(grayed)
 
+    cookie.click()
+
+    if time.time() > timeout:
         all_prices = driver.find_elements_by_css_selector("#store b")
 
         item_prices = []
@@ -62,11 +47,47 @@ while True:
             finally:
                 item_prices.append(item_price)
 
-        print(item_prices)
+        cookie_upgrades = {}
 
+        for n in range(len(item_prices)):
+            cookie_upgrades[item_prices[n]] = item_ids[n]
 
-        driver.close()
-        break
+        # print(cookie_upgrades)
+
+        cookie_count = driver.find_element_by_id('money').text
+        try:
+            cookie_count = int(cookie_count)
+        except ValueError:
+            cookie_count = int(cookie_count.replace(',', ''))
+
+        # print(cookie_count)
+        # print(type(cookie_count))
+
+        affordable_upgrades = {}
+
+        for cost, id in cookie_upgrades.items():
+            if cookie_count > cost:
+                affordable_upgrades[cost] = id
+
+        # print(affordable_upgrades)
+
+        highest_price_affordable_upgrade = max(affordable_upgrades)
+        # print(highest_price_affordable_upgrade)
+
+        to_purchase_id = affordable_upgrades[highest_price_affordable_upgrade]
+        print(to_purchase_id)
+
+        driver.find_element_by_id(to_purchase_id).click()
+
+        timeout = time.time() + 5
+
+        if time.time() > five_min:
+            cookie_per_s = driver.find_element_by_id("cps").text
+            five_min = time.time() + 60
+            print(cookie_per_s)
+
+        # driver.close()
+        # break
 
 
 
