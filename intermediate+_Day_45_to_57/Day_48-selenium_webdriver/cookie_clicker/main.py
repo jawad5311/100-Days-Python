@@ -38,16 +38,35 @@ print(cookie_count)
 
 # condition = cookie_count *
 
-timeout = time.time() + 10
+timeout = time.time() + 1
 
-while cookie_count < 1000:
+while True:
     cookie.click()
     if time.time() > timeout:
-        timeout = time.time() + 5
-        print('Timed Out')
+        # timeout = time.time() + 5
+        # print('Timed Out')
         # grayed = driver.find_element_by_class_name('grayed')
         # item = EC.invisibility_of_element(grayed)
 
+        all_prices = driver.find_elements_by_css_selector("#store b")
+
+        item_prices = []
+
+        for price in all_prices[:-1]:
+            item_price = price.text.split(' ')[-1]
+            try:
+                item_price = int(item_price)
+            # print(item_price)
+            except ValueError:
+                item_price = int(item_price.replace(',', ''))
+            finally:
+                item_prices.append(item_price)
+
+        print(item_prices)
+
+
+        driver.close()
+        break
 
 
 
