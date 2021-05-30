@@ -12,7 +12,8 @@ dotenv.load_dotenv()  # Loads Environment variables
 email = os.getenv('EMAIL_IG')
 password = os.getenv('PASSWORD_IG')
 
-similar_account = ''  # insta user whom followers bot will follow
+insta_url = 'https://www.instagram.com/'
+similar_account = 'myaomyai1'  # insta user whom followers bot will follow
 
 
 class InstaFollower:
@@ -30,7 +31,7 @@ class InstaFollower:
 
     def login_insta(self):
         """ Login to Insta """
-        self.driver.get('https://www.instagram.com/')
+        self.driver.get(insta_url)
         time.sleep(3)
 
         # Get hold of email and password entries
@@ -48,22 +49,42 @@ class InstaFollower:
         close_popup.click()
 
     def find_followers(self):
-        pass
+        """ Find the followers of the account you want to follow """
+        self.driver.get(f"{insta_url}{similar_account}")
+        time.sleep(5)
+        # Find the followers button and click it
+        followers_popup = self.driver.find_element_by_css_selector('header a')
+        followers_popup.click()
+        # print(followers_popup.text)
+        time.sleep(2)
+        # Holds the div in which the followers are appearing
+        modal = self.driver.find_element_by_xpath('/html/body/div[5]/div/div/div[2]')
+
+        for i in range(10):
+            """ Scroll down the followers list """
+            self.driver.execute_script("arguments[0].scrollTop = arguments[0].scrollHeight", modal)
+            time.sleep(1)
 
     def follow(self):
         pass
 
     def logout_insta(self):
+        """ Logout user from the insta """
+        # Find profile img and click on it
         profile_img = self.driver.find_element_by_xpath('//*[@id="react-root"]/section/nav/div[2]/div/div/div[3]/div/div[5]/span/img')
         profile_img.click()
-        time.sleep(2)
+        time.sleep(1)
+        # Find logout from the drop down menu and click it
         log_out = self.driver.find_element_by_xpath('/html/body/div[1]/section/nav/div[2]/div/div/div[3]/div/div[5]/div[2]/div[2]/div[2]/div[2]/div/div/div/div/div/div')
         log_out.click()
 
 
 bot = InstaFollower()
 bot.login_insta()
-bot.logout_insta()
+bot.find_followers()
+
+
+# bot.logout_insta()
 
 
 # search_bar = driver.find_element_by_xpath('//*[@id="react-root"]/section/nav/div[2]/div/div/div[2]/input')
