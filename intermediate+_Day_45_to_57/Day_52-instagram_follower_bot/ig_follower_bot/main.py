@@ -1,5 +1,5 @@
 import time
-
+import random
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
@@ -13,7 +13,7 @@ email = os.getenv('EMAIL_IG')
 password = os.getenv('PASSWORD_IG')
 
 insta_url = 'https://www.instagram.com/'
-similar_account = 'myaomyai1'  # insta user whom followers bot will follow
+similar_account = 'follovv_for_follovv'  # insta user whom followers bot will follow
 
 
 class InstaFollower:
@@ -60,13 +60,23 @@ class InstaFollower:
         # Holds the div in which the followers are appearing
         modal = self.driver.find_element_by_xpath('/html/body/div[5]/div/div/div[2]')
 
-        for i in range(10):
+        for i in range(3):
             """ Scroll down the followers list """
             self.driver.execute_script("arguments[0].scrollTop = arguments[0].scrollHeight", modal)
             time.sleep(1)
 
     def follow(self):
-        pass
+        """ Follows the find users """
+        # Locate the follow buttons of the all the users in followers list
+        follow_btns = self.driver.find_elements_by_css_selector('.PZuss button')
+        # Go through each button and if button text is follow then click on it
+        for btn in follow_btns:
+            if btn.text == 'Follow':
+                time.sleep(1)
+                btn.click()
+                rand_time = random.randint(2, 40)  # Creates a random int to be use as time
+                print(rand_time)
+                time.sleep(rand_time)  # wait for the time until click on the next button
 
     def logout_insta(self):
         """ Logout user from the insta """
@@ -82,12 +92,6 @@ class InstaFollower:
 bot = InstaFollower()
 bot.login_insta()
 bot.find_followers()
+bot.follow()
 
-
-# bot.logout_insta()
-
-
-# search_bar = driver.find_element_by_xpath('//*[@id="react-root"]/section/nav/div[2]/div/div/div[2]/input')
-# search_bar.send_keys('python enthusiast')
-# search_bar.send_keys(Keys.ENTER)
 
