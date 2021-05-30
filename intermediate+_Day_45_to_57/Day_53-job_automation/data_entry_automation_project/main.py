@@ -21,10 +21,23 @@ soup = bs4.BeautifulSoup(response_zillow.text, 'html.parser')
 # print(soup.prettify())
 
 rent_prices = soup.find_all(attrs={"data-testid": "property-price"})
-property_address = soup.find_all(attrs={"data-testid": "property-street"})
-property_links = soup.find_all(attrs={"data-testid": "property-price"})
-# print(len(prices))
+property_address_1 = soup.find_all(attrs={"data-testid": "property-street"})
+property_address_2 = soup.find_all(attrs={"data-testid": "property-region"})
+links = soup.find_all(name='a', attrs={"data-testid": "property-card-link"})
 
-# for price in prices:
-#     print(price.text)
+property_rents = [rent.text for rent in rent_prices]
+property_addr_1 = [adr.text for adr in property_address_1]
+property_addr_2 = [adr.text for adr in property_address_2]
+property_links = [link['href'] for link in links]
+
+print(len(property_rents))
+print(property_rents)
+print(len(property_addr_1))
+print(property_addr_1)
+print(len(property_addr_2))
+print(property_addr_2)
+print(len(property_links))
+print(property_links)
+
+
 
