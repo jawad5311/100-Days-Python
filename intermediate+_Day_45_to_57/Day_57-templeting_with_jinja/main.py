@@ -46,7 +46,7 @@ def get_name_data(name):
 
 
 @app.route('/blog')
-def blog():
+def get_blog():
     url = 'https://api.npoint.io/ecc8ddefc7a8ef28a6c1'
     response = requests.get(url).json()
     return render_template('blog.html', posts=response)
