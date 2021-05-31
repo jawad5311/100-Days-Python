@@ -36,12 +36,21 @@ def get_name_data(name):
     # Calling the functions to get user age and gender
     user_gender = get_gender(name)
     user_age = get_age(name)
-    # Creates a template to be displayed on screen
-    template_text = f"<h1>Hey {name},</h1>" \
-                    f"<h2>I think you are {user_gender},</h2>\n" \
-                    f"<h3>And maybe {user_age} years old.</h3>"
 
-    return template_text
+    return render_template(
+        'index.html',
+        username=name,
+        gender=user_gender,
+        age=user_age
+    )
+
+
+@app.route('/blog')
+def blog():
+    url = 'https://api.npoint.io/ecc8ddefc7a8ef28a6c1'
+    response = requests.get(url).json()
+    return render_template('blog.html', posts=response)
+
 
 
 if __name__ == "__main__":
