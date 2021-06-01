@@ -1,4 +1,13 @@
+import wtforms
 from flask import Flask, render_template
+from wtforms import Form, BooleanField, StringField, validators, PasswordField
+
+
+class LoginForm(Form):
+    email = StringField('Email Address', [validators.Length(min=6, max=35)])
+    password = PasswordField('password', [validators.Length(min=4, max=25)])
+    accept_rules = BooleanField('I accept the site rules', [validators.InputRequired()])
+
 
 app = Flask(__name__)
 
@@ -10,7 +19,7 @@ def home():
 
 @app.route("/login")
 def login():
-    return render_template("login.html")
+    return render_template("login.html", form=LoginForm())
 
 
 if __name__ == '__main__':
