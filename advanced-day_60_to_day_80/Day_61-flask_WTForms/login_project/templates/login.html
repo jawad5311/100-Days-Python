@@ -11,6 +11,9 @@
 			<form action="{{ url_for('login') }}" method="post">
 				{{ form.csrf_token }}
 				{{ form.email.label }} <br>{{ form.email(size=30) }}<br><br>
+<!--				{% for err in form.email.errors %}-->
+<!--				<span style="color:red">{{ err }}</span>-->
+<!--				{% endfor %}-->
 				{{ form.password.label }} <br>{{ form.password(size=30) }}<br><br>
 				{{ form.accept_rules.label }} {{ form.accept_rules(size=10) }}<br><br>
 				{{ form.submit_btn }}
