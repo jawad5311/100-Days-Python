@@ -4,9 +4,22 @@ from wtforms import Form, BooleanField, StringField, validators, PasswordField
 
 
 class LoginForm(Form):
-    email = StringField('Email Address', [validators.Length(min=6, max=35)])
-    password = PasswordField('password', [validators.Length(min=4, max=25)])
-    accept_rules = BooleanField('I accept the site rules', [validators.InputRequired()])
+    email = StringField(
+        'Email Address',
+        [validators.Length(min=6, max=35),
+         validators.DataRequired(),
+         validators.Email()]
+    )
+    password = PasswordField(
+        'password',
+        [validators.Length(min=4, max=25),
+         validators.DataRequired()]
+    )
+    accept_rules = BooleanField(
+        'I accept the site rules',
+        [validators.InputRequired()]
+    )
+    submit_btn = wtforms.SubmitField('Login')
 
 
 app = Flask(__name__)
